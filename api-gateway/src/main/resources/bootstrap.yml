@@ -1,0 +1,15 @@
+# 设定网关服务的端口为 700x, 依次位 7001,7002,7003
+server:
+  port: 7001
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.168.135.77:8848
+        file-extension: yaml
+        shared-configs: all-service.yaml
+
+

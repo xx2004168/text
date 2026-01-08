@@ -1,0 +1,18 @@
+
+server:
+  port: 10001 # 端口区分
+
+spring:
+  application:
+    name: rabbit-producer # 服务名称，每个服务的名称要加以区分
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.168.135.77:8848
+        file-extension: yaml # 配置文件的后缀名
+        shared-configs: all-service.yaml # 所有服务共享的配置信息
+  profiles:
+    active: dev
+  rabbitmq:
+
+  # 先加载 bootstrap.yml -> shop-user.yaml -> shop-user-dev.yaml

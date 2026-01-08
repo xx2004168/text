@@ -1,0 +1,41 @@
+# 设定网关服务的端口为 700x, 依次位 7001,7002,7003
+server:
+  port: 7001
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: route-product
+          uri: http://127.0.0.1:8071 # 指向商品服务
+          order: 1
+          predicates: # 配置谓词规则
+            - Path=/shop-product/**
+          filters: # 配置过滤器
+            - StripPrefix=1 # http://127.0.0.1:7001/shop-product/api/v1/message/getInfo/10 => http://127.0.0.1:8071/api/v1/message/getInfo/10
+        # 权限服务的路由
+        - id: route-user
+          uri: http://127.0.0.1:8061
+          order: 1
+          predicates:
+            - Path=/shop-user/**
+          filters:
+            - StripPrefix=1 # http://127.0.0.1:7001/shop-user/api/v1/message/getInfo/10 => http://127.0.0.1:8061/api/v1/message/getInfo/10
+        # 订单服务的路由
+        - id: route-order
+          uri: http://127.0.0.1:8081
+          order: 1
+          predicates:
+            - Path=/shop-order/**
+          filters:
+            - StripPrefix=1 # http://127.0.0.1:7001/shop-order/api/v1/message/getInfo/10 => http://127.0.0.1:8081/api/v1/message/getInfo/10
+        # 营销服务的路由
+        - id: route-sale
+          uri: http://127.0.0.1:8091
+          order: 1
+          predicates:
+            - Path=/shop-sale/**
+          filters:
+            - StripPrefix=1

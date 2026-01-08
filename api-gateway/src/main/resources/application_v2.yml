@@ -1,0 +1,24 @@
+# 设定网关服务的端口为 700x, 依次位 7001,7002,7003
+server:
+  port: 7001
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.135.77:8848
+    gateway:
+      routes:
+        - id: route-product
+          # lb://协议头是gateway内部的一个声明，全拼load balance
+          uri: lb://127.0.0.1:8071 # 指向商品服务
+#          order: 1
+          predicates: # 配置谓词规则
+            - Path=/shop-product/**,/shop-stock/**
+          filters: # 配置过滤器
+            - StripPrefix=1 # http://127.0.0.1:7001/shop-product/api/v1/message/getInfo/10 => http://127.0.0.1:8071/api/v1/message/getInfo/10
+      discovery:
+        locator:
+          enabled: true

@@ -1,0 +1,44 @@
+
+server:
+  port: 8061 # 端口区分
+
+spring:
+  application:
+    name: shop-user # 服务名称，每个服务的名称要加以区分
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.168.135.77:8848
+        file-extension: yaml # 配置文件的后缀名
+        shared-configs: all-service.yaml # 所有服务共享的配置信息
+  profiles:
+    active: dev
+    # 先加载 bootstrap.yml -> shop-user.yaml -> shop-user-dev.yaml
+
+####################################################################################################
+# Seata 配置
+seata:
+  enabled: true # 默认开启
+  application-id: ${spring.application.name}
+  tx-service-group: default_tx_group # 事务群组（可以每个应用独立取名，也可以使用相同的名字）
+  registry:
+    type: nacos  # file 、nacos 、eureka、redis、zk、consul、etcd3、sofa
+    nacos:
+      server-addr: 192.168.135.77:8848
+      namespace:
+      cluster: default
+      group: SEATA_GROUP
+      username: nacos
+      password: nacos
+  config:
+    type: nacos  # file、nacos 、apollo、zk、consul、etcd3
+    nacos:
+      server-addr: 192.168.135.77:8848
+      namespace:
+      group: SEATA_GROUP
+      username: nacos
+      password: nacos
+      data-id: seata-file-conf.yaml
+  log:
+    exception-rate: 100
+####################################################################################################
